@@ -16,6 +16,11 @@ public class Cliente extends Thread  {
 
 	}
 
+	public void run()
+	{
+		
+	}
+	
 	public void finalize() throws Throwable {
 
 	}
