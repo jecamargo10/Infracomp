@@ -10,15 +10,25 @@ public class Cliente extends Thread  {
 
 	private int id;
 	public Mensaje m_Mensaje;
-	public Buffer m_Buffer;
+	public static Buffer m_Buffer;
 
-	public Cliente(){
-
+	public Cliente(int i, Buffer b){
+		id=i;
+		m_Buffer=b;
 	}
 
 	public void run()
 	{
-		
+		m_Mensaje=new Mensaje();
+		try 
+		{
+			m_Buffer.enviarMensaje(m_Mensaje);
+		} 
+		catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void finalize() throws Throwable {

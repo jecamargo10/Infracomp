@@ -15,9 +15,9 @@ public class Buffer
 	
 	private List<Mensaje> mensajes;
 	
-	private int numClientes;
+	private static int numClientes;
 	
-	private int numServidores;
+	private static int numServidores;
 
 	public Buffer(){
 		try 
@@ -88,6 +88,16 @@ public class Buffer
 	public static void main(String[] arg)
 	{
 		Buffer b= new Buffer();
+		for(int i=0;i<numClientes;i++)
+		{
+			Cliente c =new Cliente(i,b);
+			c.start();
+		}
+		for(int j=0;j<numServidores;j++)
+		{
+			Servidor s=new Servidor();
+			s.start();
+		}
 	}
 
 	public void finalize() throws Throwable {
