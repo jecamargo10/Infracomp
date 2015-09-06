@@ -12,11 +12,41 @@ public class Mensaje {
 	private String pregunta;
 	private int estado;
 
-	public Mensaje(){
+	public Mensaje(String pPregunta)
+	{
+		setRespuesta(" ");
+		setPregunta(pPregunta);
+		setEstado(0);
+		
+				
+	}
+
+	public void finalize() throws Throwable 
+	{
 
 	}
 
-	public void finalize() throws Throwable {
+	public String getPregunta() {
+		return pregunta;
+	}
 
+	public void setPregunta(String pregunta) {
+		this.pregunta = pregunta;
+	}
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	public String getRespuesta() {
+		return respuesta;
+	}
+
+	public void setRespuesta(String respuesta) {
+		this.respuesta = respuesta;
 	}
 }//end Mensaje

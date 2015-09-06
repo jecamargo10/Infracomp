@@ -13,6 +13,9 @@ public class Buffer
 
 	private int capacidad;
 	
+	/**
+	 * Lista con los mensajes almacenados
+	 */
 	private List<Mensaje> mensajes;
 	
 	private static int numClientes;
@@ -50,39 +53,70 @@ public class Buffer
 	 */
 	public void enviarMensaje(Mensaje mensaje) throws InterruptedException
 	{
-		synchronized(mensajes)
+		synchronized(this)
 		{
+			int i = 0;
 			//Si no hay espacio para guardar más mensajes. Se duerme en el buffer
-			while(mensajes.size()==capacidad)
-				this.wait();
-		}
-		synchronized (this)
-		{
+			if(capacidad == 0)
+			{
+				System.out.println("Espero");
+				wait();			
+			}
+	
 			//Agrega un mensaje después de haber verificado la capacidad.
-			mensajes.add(mensaje);		
+			mensajes.add(mensaje);
+			capacidad--;
+			System.out.println("Guarde un mensaje");
+
 		}	
 		synchronized(mensaje)
 		{
 			//Se queda dormido en el mensaje esperando la respuesta.
 			mensaje.wait();
+
+			
 		}
+	}
+	
+	public  boolean hayMensaje()
+	{
+		synchronized(this)
+		{
+		if(mensajes.size()==0)
+		{
+			return false;
+		}
+		else
+		{
+			Mensaje resp;
+		
+				resp = mensajes.remove(0);
+				capacidad++;
+				this.notify();
+			
+			synchronized(resp)
+			{
+				
+				resp.notify();
+				System.out.println("Retire 1 mensaje");
+				System.out.println(mensajes.size());
+
+			}
+			return true;
+
+		}
+		
+
+		
+		}
+		
 	}
 	
 	public Mensaje retirarMensaje()
 	{
-		while(mensajes.size()==0){
-			//TODO yield();
-		}
-		Mensaje resp;
-		synchronized(this)
-		{
-			resp = mensajes.remove(0);		
-		}
-		synchronized(resp)
-		{
-			resp.notify();	
-		}
-		return resp;
+		
+		
+		return null;
 	}
 	
 	public static void main(String[] arg)
@@ -95,12 +129,33 @@ public class Buffer
 		}
 		for(int j=0;j<numServidores;j++)
 		{
-			Servidor s=new Servidor();
+			Servidor s=new Servidor(j,b);
 			s.start();
 		}
+		
+
+		
+
 	}
+
 
 	public void finalize() throws Throwable {
 
 	}
+
+	public void meRetiro(Cliente cliente) throws Throwable 
+	{
+	synchronized(cliente)
+	{
+		numClientes--;
+		System.out.println("Chao");
+		cliente.finalize();
+	}
+	}
+
+	public boolean hayGente()
+	{
+		return numClientes!= 0;
+	}
+
 }

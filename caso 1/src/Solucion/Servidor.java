@@ -11,15 +11,32 @@ public class Servidor extends Thread
 {
 
 	private int id;
-	public Buffer m_Buffer;
+	public Buffer buff;
 	public Mensaje m_Mensaje;
 
-	public Servidor(){
-
+	public Servidor(int i, Buffer bBuff)
+	{
+		buff = bBuff;
+		id =i;
 	}
 
 	public void run()
 	{
+		// implementacion de la espera activa, constantemente estoy preguntandole al buffer si existe algun mensaje
+		while (true)
+		{
+			if(!buff.hayMensaje())
+			{
+				
+				
+// Cada vez que no hay ningun mensaje, el servidor cede memoria
+				yield();
+			}
+			
+			
+
+			
+		}
 		
 	}
 	

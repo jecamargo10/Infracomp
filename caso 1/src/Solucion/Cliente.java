@@ -15,17 +15,24 @@ public class Cliente extends Thread  {
 	public Cliente(int i, Buffer b){
 		id=i;
 		m_Buffer=b;
+	
 	}
 
 	public void run()
 	{
-		m_Mensaje=new Mensaje();
+		m_Mensaje=new Mensaje("Hola");
 		try 
 		{
 			m_Buffer.enviarMensaje(m_Mensaje);
+			System.out.println("Desperte");
+			m_Buffer.meRetiro(this);
+
 		} 
-		catch (InterruptedException e)
+		catch (Exception e)
 		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
