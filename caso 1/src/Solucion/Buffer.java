@@ -62,61 +62,41 @@ public class Buffer
 				System.out.println("Espero");
 				wait();			
 			}
-	
 			//Agrega un mensaje después de haber verificado la capacidad.
 			mensajes.add(mensaje);
 			capacidad--;
 			System.out.println("Guarde un mensaje");
-
 		}	
 		synchronized(mensaje)
 		{
 			//Se queda dormido en el mensaje esperando la respuesta.
 			mensaje.wait();
-
-			
 		}
 	}
 	
-	public  boolean hayMensaje()
+	public boolean retirarMensaje()
 	{
 		synchronized(this)
 		{
-		if(mensajes.size()==0)
-		{
-			return false;
-		}
-		else
-		{
-			Mensaje resp;
-		
+			if(mensajes.size()==0)
+			{
+				return false;
+			}
+			else
+			{
+				Mensaje resp;
 				resp = mensajes.remove(0);
 				capacidad++;
 				this.notify();
-			
-			synchronized(resp)
-			{
-				
-				resp.notify();
-				System.out.println("Retire 1 mensaje");
-				System.out.println(mensajes.size());
-
+				synchronized(resp)
+				{
+					resp.notify();
+					System.out.println("Retire 1 mensaje");
+					System.out.println(mensajes.size());
+				}
+				return true;
 			}
-			return true;
-
 		}
-		
-
-		
-		}
-		
-	}
-	
-	public Mensaje retirarMensaje()
-	{
-		
-		
-		return null;
 	}
 	
 	public static void main(String[] arg)
@@ -132,12 +112,7 @@ public class Buffer
 			Servidor s=new Servidor(j,b);
 			s.start();
 		}
-		
-
-		
-
 	}
-
 
 	public void finalize() throws Throwable {
 
@@ -145,12 +120,12 @@ public class Buffer
 
 	public void meRetiro(Cliente cliente) throws Throwable 
 	{
-	synchronized(cliente)
-	{
-		numClientes--;
-		System.out.println("Chao");
-		cliente.finalize();
-	}
+		synchronized(cliente)
+		{
+			numClientes--;
+			System.out.println("Chao");
+			cliente.finalize();
+		}
 	}
 
 	public boolean hayGente()

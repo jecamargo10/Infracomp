@@ -23,24 +23,17 @@ public class Servidor extends Thread
 	public void run()
 	{
 		// implementacion de la espera activa, constantemente estoy preguntandole al buffer si existe algun mensaje
-		while (true)
+		while (buff.hayGente())
 		{
-			if(!buff.hayMensaje())
-			{
-				
-				
-// Cada vez que no hay ningun mensaje, el servidor cede memoria
+			if(!buff.retirarMensaje())
+			{					
+				// Cada vez que no hay ningun mensaje, el servidor cede memoria
 				yield();
-			}
-			
-			
-
-			
-		}
-		
+			}	
+		}		
 	}
-	
+
 	public void finalize() throws Throwable {
 
 	}
-}//end Servidor
+}

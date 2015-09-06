@@ -14,8 +14,7 @@ public class Cliente extends Thread  {
 
 	public Cliente(int i, Buffer b){
 		id=i;
-		m_Buffer=b;
-	
+		m_Buffer=b;	
 	}
 
 	public void run()
@@ -26,7 +25,6 @@ public class Cliente extends Thread  {
 			m_Buffer.enviarMensaje(m_Mensaje);
 			System.out.println("Desperte");
 			m_Buffer.meRetiro(this);
-
 		} 
 		catch (Exception e)
 		{
@@ -37,7 +35,7 @@ public class Cliente extends Thread  {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void finalize() throws Throwable {
 
 	}
